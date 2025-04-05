@@ -35,15 +35,29 @@ public class NhanVienService {
         NhanVien nv = nhanVien.dto(new NhanVien());
         return nhanVienRepository.save(nv);
     }
+    public NhanVien update(NhanVienRequest nhanVien, int id) {
+        Optional<NhanVien> optional = nhanVienRepository.findById(id);
+
+        return optional.map(o->{
+            o.setMa(nhanVien.getMa());
+            o.setTen(nhanVien.getTen());
+            o.setLuong(nhanVien.getLuong());
+            return nhanVienRepository.save(o);
+        }).orElse(null);
+    }
 
     public Boolean delete(int id){
         Optional<NhanVien> optional = nhanVienRepository.findById(id);
         if(optional.isPresent()){
-            NhanVien nv = optional.get();
             nhanVienRepository.deleteById(id);
             return true;
         }else {
             return false;
         }
+    }
+
+    public NhanVien detail(int id) {
+        Optional<NhanVien> optional = nhanVienRepository.findById(id);
+        return optional.orElse(null);
     }
 }
